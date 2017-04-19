@@ -24,3 +24,23 @@ a{text-decoration:none;}
  body{margin:0; background-color:black;}
  #header{ padding-top:1.5%; height:85%;}
  #Main_Body{}
+ #login_label{-webkit-text-stroke: 2px black;  color: white;  font-family:Arial; font-size:4.5vw; font-weight:600;}
+ #login_input{ color: black;  font-family:Arial; font-size:4.5vw; font-weight:600;}
+ 
+ #RoundedBox
+ { 
+ 	padding:20px;
+ 	behavior: url(border-radius.htc);
+	-webkit-border-radius: 1px;
+	-webkit-border-top-right-radius: 60px;
+	-webkit-border-top-left-radius: 60px;
+	-moz-border-radius: 1px;
+	-moz-border-radius-topright: 60px;
+	-moz-border-radius-topleft: 60px;
+	border-radius: 1px;
+	border-radius: 60px;
+	border-style:solid;
+	border-color:white;
+	border-width:medium;
+	background-color:rgba(0, 0, 0, 0.5);
+	}
