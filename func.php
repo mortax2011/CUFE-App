@@ -16,10 +16,6 @@ function Login($username, $password)
 	$Student_Username = preg_replace("/'/", '', $Student_Username);
 	$Student_Password = preg_replace("/'/", '', $Student_Password);
 	
-	//Secure Inputs From Any Special Chars
-	$Student_Username = mysql_real_escape_string($Student_Username);
-	$Student_Password = mysql_real_escape_string($Student_Password);
-	
 	include('db_connect.php');
 	$query=mysql_query("SELECT * FROM Login WHERE Student_ID='".$Student_Username."' AND Student_Password='".$Student_Password."';");
 	$row=mysql_fetch_array($query);
