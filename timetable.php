@@ -11,7 +11,7 @@
 <table id="MainTable" align="center">
 	
     <tr>
-    	<td background="files/images/Top.png" bgcolor="darkred" style="background-repeat:no-repeat; background-size:cover; height:10%"><img id="header" src="files/images/timetable_txt.png"></td>
+    	<td id="Header">TimeTable</td>
     </tr>
     <tr>
     	<td height="90%">
