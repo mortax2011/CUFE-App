@@ -16,9 +16,9 @@
   <tr>
     	<td height="90%">
         	<div id="Main_Body">
+		 <table id="Classwork_Table">
+            <tr>
 		<th>Subject Code</th><th>Subject Name</th><th>Midterm</th><th>CourseWork</th>
-        	</div>
-        </td>
     </tr>
 	<?php
 	
@@ -27,19 +27,13 @@
 	$Student_ID = getID();
 	$query=mysql_query("select Course_Code,Course_Name,Midterm,Classwork from enrolled_in,course where course.Course_ID = enrolled_in.Course_ID && enrolled_in.Student_ID = '".$Student_ID."'") or die('Error while Loading the Grades!');	
 	
-	
-	
 	while($row=mysql_fetch_array($query))
 	{
-		#every iteration in the loop represents a row(tupple) which is included in the '$row' array
-		$Code = $row['Course_Code'];	#Get Data1 from the row and put it in variable '$Data1'
+		$Code = $row['Course_Code'];
 		$Name= $row['Course_Name'];
 		$Midterm= $row['Midterm'];
 		$Classwork= $row['Classwork'];
 		
-		
-		#for every iteration we are going to create a row (<tr>)
-		#Inside the row, we are going to add both columns (Data1 and Data2)
 		echo('<tr>');
 			
 			
@@ -51,9 +45,12 @@
 		echo('</tr>');	
 	}
 	
-	mysql_close();	#Closes the mysql server connection
+	mysql_close();
 	
 ?>
+    </table>
+	</div>
+    </td></tr>
     </table>
     
 </body>
