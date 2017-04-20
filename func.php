@@ -19,6 +19,7 @@ function Login($username, $password)
 	include('db_connect.php');
 	$query=mysql_query("SELECT * FROM Login WHERE Student_ID='".$Student_Username."' AND Student_Password='".$Student_Password."';");
 	$row=mysql_fetch_array($query);
+	mysql_close();
 	
 	if(!empty($row))
 	{
