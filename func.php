@@ -2,6 +2,46 @@
 
 session_start();
 
+//Some Useful Functions
+function Location($url)
+{
+	echo("<script>window.location='".$url."'</script>");
+}
+
+function Message($msg)
+{
+	echo("<script>alert('".$msg."');</script>");
+}
+
+function getID()
+{
+	return encrypt_decrypt('decrypt', $_SESSION['username']);	
+}
+
+function Session_ON()
+{
+	if(isset($_SESSION['username']) && !empty($_SESSION['username']))
+		return true;
+	return false;
+}
+
+function CheckLogin($redirect)
+{
+	if(!Session_ON())
+	{
+		if($redirect==true)
+			Location('login.php');
+		else
+			return false;
+	}
+	return true;
+}
+
+
+//Check for timeout
+if(Auto_Logout())
+	Logout();
+
 function Login($username, $password)
 {
 	//Remove Whitespaces
@@ -19,39 +59,38 @@ function Login($username, $password)
 	include('db_connect.php');
 	$query=mysql_query("SELECT * FROM Login WHERE Student_ID='".$Student_Username."' AND Student_Password='".$Student_Password."';");
 	$row=mysql_fetch_array($query);
-	mysql_close();
 	
 	if(!empty($row))
 	{
 		//Authenticated!		
 		$_SESSION['username']=encrypt_decrypt('encrypt', $Student_Username);
+		$_SESSION["login_time"]=time();
 		return true;
 	}
 	else
 		return false;
-	
 }
+
 function Logout()
 {
-	session_destroy();	
-	unset($_SESSION['username']);
+	session_unset();
+	session_destroy();
+	Location('login.php');
 }
 
-function CheckLogin($redirect)
+function Auto_Logout()
 {
-	if(!isset($_SESSION['username'])||empty($_SESSION['username']))
+	if(Session_ON())
 	{
-		if($redirect==true)
-			echo("<script>window.location='login.php'</script>");
+		$TimeOut=10;	//Timeout in minutes
+		$t=time();
+		$t0=$_SESSION["login_time"];
+		$diff=$t - $t0;
+		if($diff>($TimeOut*60) || !isset($t0))
+			return true;
 		else
-			return false;
+			$_SESSION["login_time"]=time();	
 	}
-	return true;
-}
-
-function getID()
-{
-	return encrypt_decrypt('decrypt', $_SESSION['username']);	
 }
 
 function encrypt_decrypt($action, $string) {
