@@ -1,14 +1,14 @@
 <?php
 include('func.php');
 if(CheckLogin(false))
-	echo("<script>window.location='index.php'</script>");
+	Location('index.php');
 	
 if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['submit']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['submit']))
 {
 	if(Login($_POST['username'], $_POST['password']))
-		echo("<script>window.location='index.php'</script>");
+		Location('index.php');
 	else
-		echo("<script>alert('Username or Password may be incorrect , Try again!');</script>");
+		Message('Username or Password may be incorrect , Try again!');
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
