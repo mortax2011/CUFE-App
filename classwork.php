@@ -25,7 +25,7 @@
 	include('db_connect.php');	
 	
 	$Student_ID = getID();
-	$query=mysql_query("select Course_Code,Course_Name,Midterm,Classwork from Enrolled_In,Course where Course.Course_ID = Enrolled_In.Course_ID && Enrolled_In.Student_ID = '".$Student_ID."'") or die('Error while Loading the Grades!');	
+	$query=mysql_query("select Course_Code,Course_Name,Midterm,Classwork from Enrolled_In,Course,Semester where Course.Course_ID = Enrolled_In.Course_ID && Enrolled_In.Semester_ID = Semester.Semester_ID && Semester.Is_Current = 1 && Enrolled_In.Student_ID = '".$Student_ID."'") or die('Error while Loading the Grades!');	
 	
 	while($row=mysql_fetch_array($query))
 	{
