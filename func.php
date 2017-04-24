@@ -112,4 +112,17 @@ function encrypt_decrypt($action, $string) {
     return $output;
 }
 
+#My time table functions
+function calculate_semester_credits($Student_ID,$Semester_ID)
+{		
+$sql="SELECT SUM(Course_Credits) FROM Course C, Enrolled_In E
+		WHERE E.Student_ID=".$Student_ID." AND E.Semester_ID=".$Semester_ID." AND C.Course_ID=E.Course_ID;";
+	
+	$run=mysql_query($sql);
+	if($row=mysql_fetch_array($run))
+	{
+			 return $row['SUM(Course_Credits)'];
+	}
+	return 0;
+}
 ?>
