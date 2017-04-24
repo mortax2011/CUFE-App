@@ -35,7 +35,7 @@ $Week_Days=array("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 		$Semester_Name=$row['Semester_Name'];
 		$Semester_ID=$row['Semester_ID'];
 		$Semester_credits=calculate_semester_credits($Student_ID,$Semester_ID);
-		$Semester_Name=str_replace(" "," Semester 	",$Semester_Name);
+		$Semester_Name=str_replace(" "," Semester ",$Semester_Name);
 		echo $Semester_Name." ( ".$Semester_credits." Credits )<br><br>";
 					
 		
