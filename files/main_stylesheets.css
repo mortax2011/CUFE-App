@@ -1,6 +1,10 @@
 @charset "utf-8";
 /* CSS Document */
 
+a{
+	color:white;
+	text-decoration:none;
+}
 
 td{
 	width:26vw;
