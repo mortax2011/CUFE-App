@@ -5,45 +5,45 @@
 td{
 	width:26vw;
 	text-align:center;
-	}
+}
 
 .Hspacer{
 	width:5.5vw;
-	}
+}
 
 .Vspacer{
 	width:5.5vh;
-	}
+}
 
 tr{
 	vertical-align:top;
-	}
+}
 
 a{
 	text-decoration:none;
-	}
+}
 
 #icon{
 	width:75%;
-	}
+}
 
- #icon:hover{
+#icon:hover{
 	 opacity: 1;
    	 filter: alpha(opacity=100); /* For IE8 and earlier */	 
-	 }
+}
  
-  #icon:active{
+#icon:active{
 	 opacity: 0.5;
   	 filter: alpha(opacity=50); /* For IE8 and earlier */
-	 }
+ }
 
- #icon_txt{-webkit-text-stroke: 2px black; 
+#icon_txt{-webkit-text-stroke: 2px black; 
 	 color: white;  font-family:Arial;
 	 font-size:4.5vw;
 	 font-weight:900;
 	 text-align:center;
 	 line-height:1;
-	}
+}
  
 #MainTable{
 	 height:100vh;
@@ -53,21 +53,21 @@ a{
 	 background-attachment:fixed;
 	 background-image:url(images/background.jpg);
 	 table-layout: fixed;
-	}
+}
  
 img{
 	 border-style:none;
-	}
+}
  
  body{
 	 margin:0;
 	 background-color:black;
-	}
+}
  
 #header{
 	 padding-top:1.5%;
 	 height:85%;
-	}
+}
 
  #Main_Body{}
 
@@ -77,17 +77,16 @@ img{
 	 font-family:Arial;
 	 font-size:4.5vw;
 	 font-weight:600;
-	}
+}
  
 #login_input{
 	 color: black;
 	 font-family:Arial;
 	 font-size:4.5vw;
 	 font-weight:600;
-	}
+}
  
- #RoundedBox
- { 
+#RoundedBox{ 
  	padding:20px;
  	behavior: url(border-radius.htc);
 	-webkit-border-radius: 1px;
@@ -102,7 +101,8 @@ img{
 	border-color:white;
 	border-width:medium;
 	background-color:rgba(0, 0, 0, 0.5);
-	}
+}
+
 #Header{
 	background-repeat:no-repeat;
 	background-size:cover;
@@ -116,10 +116,11 @@ img{
 	text-align:center;
 	vertical-align:middle;
 	font-weight:600;
-	}
+}
+
 input[type=text]:focus {
     border-color:#333;
-	}
+}
 
 input[type=submit] {
 	padding:5px 15px; 
@@ -129,7 +130,7 @@ input[type=submit] {
 	-moz-border-radius: 5px;
 	border-radius: 5px; 
 	behavior: url(border-radius.htc);
-	}	
+}	
 /* *********************************************** */
 /* Fady's Part Beginning*/
 	
@@ -141,7 +142,7 @@ input[type=submit] {
 	font-size:3.5vw;
 	font-family:Arial, Helvetica, sans-serif;
 	border-spacing:0px;
-	}
+}
 
 #Classwork_Table td{
 	border-style:solid;
@@ -150,7 +151,7 @@ input[type=submit] {
 	text-align:center;
 	border-color:black;
 	background-color:rgba(0, 0, 0, 0.5);
-	}
+}
 	
 #Classwork_Table th{
 	font-weight:600;
@@ -160,7 +161,7 @@ input[type=submit] {
 	text-align:center;
 	border-color:black;
 	color:black;
-	}
+}
 	
 /* Fady's Part End*/
 /* *********************************************** */
@@ -178,7 +179,7 @@ input[type=submit] {
 	font-family:Arial, Helvetica, sans-serif;
 	border-spacing:0px;
 	width:98vw;
-	}
+}
 
 #Timetable_Table th{
 	color:black;
@@ -186,7 +187,7 @@ input[type=submit] {
 	font-weight:600;
 	background-color:rgba(255, 255, 0, 0.5);
 	text-align:center;
-	}
+}
 
 #Timetable_Table td{
 	border-style:solid;
@@ -195,7 +196,7 @@ input[type=submit] {
 	text-align:left;
 	border-color:black;
 	background-color:rgba(0, 0, 0, 0.5);
-	}
+}
 
 #Timetable_Div{
 	max-width:98vw;
@@ -203,7 +204,7 @@ input[type=submit] {
 	font-size:2.5vw;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align:left;
-	}
+}
 
 #Timetable_Div_Basic{
 	max-width:98vw;
@@ -211,7 +212,46 @@ input[type=submit] {
 	font-size:2vw;
 	font-family:Arial, Helvetica, sans-serif;
 	text-align:left;		
-	}
+}
 
-	/* Kero's Part End*/
-	/* *********************************************** */
+/* Kero's Part End*/
+/* *********************************************** */
+
+
+/* *********************************************** */
+/* Mortada's Part Beginning*/
+	
+#Profile_Table{
+	color:white;
+	border-style:none;
+	border-width:medium;
+	padding:2vw;
+	font-size:3vw;
+	font-family:Arial, Helvetica, sans-serif;
+	border-spacing:0px;
+	width:98vw;
+}
+
+#Profile_Table th{
+	color:black;
+	border-style:solid;
+	font-weight:600;
+	background-color:rgba(255, 255, 0, 0.5);
+	text-align:Left;
+	vertical-align:middle;
+	width:15vw;
+	padding:1.5vw;
+
+}
+
+#Profile_Table td{
+	border-style:solid;
+	padding:1.5vw;
+	vertical-align:middle;
+	text-align:left;
+	border-color:black;
+	background-color:rgba(0, 0, 0, 0.5);
+}
+
+/* Mortada's Part End*/
+/* *********************************************** */
