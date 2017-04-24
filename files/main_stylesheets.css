@@ -205,5 +205,13 @@ input[type=submit] {
 	text-align:left;
 	}
 
+#Timetable_Div_Basic{
+	max-width:98vw;
+	color:white;
+	font-size:2vw;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:left;		
+	}
+
 	/* Kero's Part End*/
 	/* *********************************************** */
