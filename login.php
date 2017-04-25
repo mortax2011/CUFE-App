@@ -29,7 +29,7 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['submi
     
     <table id="RoundedBox" align="center">
     <tr>
-    	<td style="text-align:left;"><label id="login_label">ID: </label></td>
+    	<td style="text-align:left;"><label id="login_label">Code: </label></td>
         <td style="text-align:left;"><input id="login_input" type="text" name="username"></td>
     </tr>
     <tr><td style="height:10px"></td></tr>
