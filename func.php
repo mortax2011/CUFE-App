@@ -42,7 +42,7 @@ function CheckLogin($redirect)
 if(Auto_Logout())
 	Logout();
 
-function Login($username, $password)
+function Authenticate($username, $password)
 {
 	//Remove Whitespaces
 	$Student_Username = preg_replace('/\s+/', '', $username);
