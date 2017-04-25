@@ -5,7 +5,7 @@ if(CheckLogin(false))
 	
 if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['submit']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['submit']))
 {
-	if(Authenticate($_POST['username'], $_POST['password']))
+	if(Login($_POST['username'], $_POST['password']))
 		Location('index.php');
 	else
 		Message('Username or Password may be incorrect , Try again!');
