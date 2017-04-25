@@ -21,12 +21,13 @@ $Week_Days=array("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 		<?php 
 			include('db_connect.php');
 			$Student_ID=getID();
-	$sql="SELECT Student_Name_EN,Student_Credits,Student_GPA FROM Student WHERE Student_ID='".$Student_ID."';";
+	$sql="SELECT Student_Code,Student_Name_EN,Student_Credits,Student_GPA FROM Student WHERE Student_ID='".$Student_ID."';";
 	$run=mysql_query($sql);
 	
 	if($row=mysql_fetch_array($run))
 	{			
-		echo '<div  id="Timetable_Div_Basic">'.$Student_ID." ". $row['Student_Name_EN']." ".'['.$row['Student_Credits'].']'." ".'['.$row['Student_GPA']."]</div>";
+		$Student_Code=$row['Student_Code'];
+		echo '<div  id="Timetable_Div_Basic">'.$Student_Code." ". $row['Student_Name_EN']." ".'['.$row['Student_Credits'].']'." ".'['.$row['Student_GPA']."]</div>";
 		echo '<div  id="Timetable_Div">'."You are registered in the following courses only for ";
 		$sql= "SELECT Semester_ID, Semester_Name FROM Semester WHERE Is_Current=1;";
 		
@@ -39,7 +40,6 @@ $Week_Days=array("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 		echo $Semester_Name." ( ".$Semester_credits." Credits )<br><br>";
 					
 		
-
 		$sql_final="SELECT C.Course_Name,C.Course_Code,T.Slot_Type,T.Slot_Day,T.Slot_From,T.Slot_To,T.Slot_Location FROM Enrolled_In as E, Course as C, Time_Slot as T WHERE E.Student_ID='".$Student_ID."' AND E.Semester_ID='".$Semester_ID."' AND E.Course_ID=C.Course_ID AND E.Slot_ID=T.Slot_ID ORDER BY Slot_Day,Slot_From;";
 		$run_final=mysql_query($sql_final);
 		echo '<table id="Timetable_Table">';
@@ -48,7 +48,6 @@ $Week_Days=array("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 		{			
 			$Course_Code=$rows_final['Course_Code'];
 			$Course_Name=$rows_final['Course_Name'];
-
 			$Slot_Type=$rows_final['Slot_Type'];										
 			$Slot_Day_Number=$rows_final['Slot_Day'];
 			$Slot_Day=$Week_Days[$Slot_Day_Number];
