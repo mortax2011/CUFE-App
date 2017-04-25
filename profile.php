@@ -19,7 +19,7 @@
 			<?php 
         include('db_connect.php');
 		$Student_ID=getID();
-		$sql="SELECT Student_Name_AR,Program_Name,Student_ID,Student_Name_EN,Student_Credits,Student_GPA FROM Program p,Student s WHERE Student_ID='".$Student_ID."'&&s.Program_ID=p.Program_ID;";
+		$sql="SELECT Student_Name_AR,Program_Name,Student_ID,Student_Name_EN,Student_Credits,Student_GPA, Student_Last_GPA FROM Program p,Student s WHERE Student_ID='".$Student_ID."'&&s.Program_ID=p.Program_ID;";
 		$run=mysql_query($sql);
 		if($row=mysql_fetch_array($run))
 		{	
