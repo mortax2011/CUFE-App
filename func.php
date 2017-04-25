@@ -57,13 +57,13 @@ function Login($username, $password)
 	$Student_Password = preg_replace("/'/", '', $Student_Password);
 	
 	include('db_connect.php');
-	$query=mysql_query("SELECT * FROM Login WHERE Student_ID='".$Student_Username."' AND Student_Password='".$Student_Password."';");
+	$query=mysql_query("SELECT S.Student_ID FROM Login L, Student S WHERE L.Student_ID=S.Student_ID AND S.Student_Code=".$Student_Username." AND Student_Password='".$Student_Password."';");
 	$row=mysql_fetch_array($query);
 	
 	if(!empty($row))
 	{
 		//Authenticated!		
-		$_SESSION['username']=encrypt_decrypt('encrypt', $Student_Username);
+		$_SESSION['username']=encrypt_decrypt('encrypt', $row['Student_ID']);
 		$_SESSION["login_time"]=time();
 		return true;
 	}
