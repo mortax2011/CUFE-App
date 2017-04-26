@@ -9,49 +9,42 @@
 <body>
 
 <table id="MainTable" align="center">
-	
+
     <tr>
     	<td id="Header">Term Classwork</td>
     </tr>
+
   <tr>
     	<td height="90%">
         	<div id="Main_Body">
 		 <table id="Classwork_Table">
             <tr>
 		<th>Subject Code</th><th>Subject Name</th><th>Midterm</th><th>CourseWork</th>
-    </tr>
-	<?php
-	
-	include('db_connect.php');	
-	
+   	    </tr>
+	<?php	
 	$Student_ID = getID();
-	$query=mysql_query("select Course_Code,Course_Name,Midterm,Classwork from Grades,Course,Semester where Course.Course_ID = Grades.Course_ID && Grades.Semester_ID = Semester.Semester_ID && Semester.Is_Current = 1 && Grades.Student_ID = '".$Student_ID."'") or die('Error while Loading the Grades!');
-	
-	while($row=mysql_fetch_array($query))
+	$query=DB_Manager::Query("select Course_Code,Course_Name,Midterm,Classwork from Grades,Course,Semester where Course.Course_ID = Grades.Course_ID && Grades.Semester_ID = Semester.Semester_ID && Semester.Is_Current = 1 && Grades.Student_ID = '".$Student_ID."'") or die('Error while Loading the Grades!');	
+	while($row=$query->fetch_assoc())
 	{
 		$Code = $row['Course_Code'];
 		$Name= $row['Course_Name'];
 		$Midterm= $row['Midterm'];
 		$Classwork= $row['Classwork'];
-		
 		echo('<tr>');
-			
-			
-			echo('<td>'.$Code.'</td>');
-			echo('<td>'.$Name.'</td>');
-			echo('<td>'.$Midterm.'</td>');
-			echo('<td>'.$Classwork.'</td>');
-			
+		echo('<td>'.$Code.'</td>');
+		echo('<td>'.$Name.'</td>');
+		echo('<td>'.$Midterm.'</td>');
+		echo('<td>'.$Classwork.'</td>');
 		echo('</tr>');	
 	}
-	
-	mysql_close();
-	
 ?>
     </table>
-	</div>
+    </div>
+
     </td></tr>
+
     </table>
-    
+
 </body>
+
 </html>
