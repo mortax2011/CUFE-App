@@ -130,7 +130,17 @@ input[type=submit] {
 	-moz-border-radius: 5px;
 	border-radius: 5px; 
 	behavior: url(border-radius.htc);
-}	
+}
+
+#Suggested_Div
+{
+	max-width:98vw;
+	color:white;
+	font-size:3.5vw;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:center;
+}
+
 /* *********************************************** */
 /* Fady's Part Beginning*/
 	
