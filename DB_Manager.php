@@ -17,8 +17,9 @@ class DB_Manager
 	{
 		if(!isset(self::$connection))
 			self::$connection=new DB_Manager;
-		$query=self::$con->query($SQL) or die("Error!");;
-		return $query;
+		if($query=self::$con->query($SQL))
+			return $query;
+		return false;
 	}
 	
 	private function __destruct()
