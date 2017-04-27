@@ -21,11 +21,6 @@ class DB_Manager
 			return $query;
 		return false;
 	}
-	
-	private function __destruct()
-	{
-		mysqli_close(self::$con);
-	}
 }
 
 ?>
