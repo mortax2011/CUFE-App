@@ -1,5 +1,5 @@
 <?php
-
+include('DB_Manager.php');
 session_start();
 
 //Some Useful Functions
