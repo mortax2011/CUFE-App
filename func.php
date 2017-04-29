@@ -432,11 +432,7 @@ function arePassed($Courses)
 }
 ////////////////////////gpa function///////////////////////////////////////////
  function calc_quality($Grade, $Course_Credits)
-{
-	
-
-	
-	
+{	
 	if($Grade=="A+"||$Grade=="A")
 	{
 		$GPA_WEIGHT="4" ; 
