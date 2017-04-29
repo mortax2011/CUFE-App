@@ -28,8 +28,6 @@ tr,td,GPATranscript_main,th
 
 					<?php 
 
-        
-
 		$Student_ID=getID();
 
 		$sql="SELECT Student_Name_AR,Program_Name,Student_Code,Student_Name_EN,Student_Credits,Student_GPA, Student_Last_GPA FROM Program p,Student s WHERE Student_ID='".$Student_ID."' AND s.Program_ID=p.Program_ID;";
