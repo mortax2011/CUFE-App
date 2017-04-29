@@ -48,6 +48,7 @@ function Session_ON()
 
 
 function CheckLogin($redirect)
+
 {
 
 	if(!Session_ON())
@@ -134,10 +135,13 @@ function Login($username, $password)
 
 
 function Logout()
-{	
-	unset($_SESSION);
+
+{
+
 	session_unset();
+
 	session_destroy();
+
 	Location('login.php');
 
 }
@@ -430,4 +434,72 @@ function arePassed($Courses)
 	
 	return true;
 }
+
+
+////////////////////////gpa transcript function //////////////////////////////
+ function calc_quality($Grade, $Course_Credits)
+{
+	
+
+	
+	
+	if($Grade=="A+"||$Grade=="A")
+	{
+		$GPA_WEIGHT="4" ; 
+	}
+	elseif($Grade=="A-")
+	{
+		$GPA_WEIGHT="3.7" ; 
+	}
+	elseif($Grade=="B+")
+	{
+		$GPA_WEIGHT="3.3" ; 
+	}
+	elseif($Grade=="B")
+	{
+		$GPA_WEIGHT="3.0" ; 
+	}
+	elseif($Grade=="B-")
+	{
+		$GPA_WEIGHT="2.7" ; 
+	}
+	elseif($Grade=="C+")
+	{
+		$GPA_WEIGHT="2.3" ; 
+	}
+	elseif($Grade=="C")
+	{
+		$GPA_WEIGHT="2.0" ; 
+	}
+	elseif($Grade=="C-")
+	{
+		$GPA_WEIGHT="1.7" ; 
+	}
+	elseif($Grade=="D+")
+	{
+		$GPA_WEIGHT="1.3" ; 
+	}
+	elseif($Grade=="D")
+	{
+		$GPA_WEIGHT="1.0" ; 
+	}
+	elseif($Grade=="D-")
+	{
+		$GPA_WEIGHT="0.7" ; 
+	}
+	elseif($Grade=="F+")
+	{
+		$GPA_WEIGHT="0.3" ; 
+	}
+	elseif($Grade=="F")
+	{
+		$GPA_WEIGHT="0" ; 
+	}
+
+	$Quality_points=$GPA_WEIGHT*$Course_Credits ; 
+	
+	return $Quality_points ;
+} 
+
 ?>
+
