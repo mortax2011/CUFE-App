@@ -166,16 +166,6 @@ tr,td,GPATranscript_main,th
 	
 	echo " <div > Total Credits = ".$Student_Credits." </div>";
 	}
-
-
-
-
-
-
-
-
-
-
 		?>
         	</div>
         </td>
