@@ -6,7 +6,7 @@ if(CheckLogin(false))
 if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['submit']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['submit']))
 {
 	if(Login($_POST['username'], $_POST['password']))
-		Location('index.php');
+		goBack();	//Go to the previous page which will be the index.php (Homepage)
 	else
 		Message('Username or Password may be incorrect , Try again!');
 }
