@@ -7,13 +7,10 @@
 <link type="text/css" rel="stylesheet" href="files/main_stylesheets.css" />
 </head>
 <body>
-
 <table id="MainTable" align="center">
-
     <tr>
     	<td id="Header">Term Classwork</td>
     </tr>
-
   <tr>
     	<td height="90%">
         	<div id="Main_Body">
@@ -40,11 +37,8 @@
 ?>
     </table>
     </div>
-
     </td></tr>
-
     </table>
-
 </body>
 
 </html>
