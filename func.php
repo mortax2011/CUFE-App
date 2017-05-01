@@ -21,6 +21,11 @@ function Message($msg)
 	echo("<script>alert('".$msg."');</script>");
 }
 
+function goBack()
+{
+	    echo("<script>window.history.back();</script>");
+}
+
 function getID()
 
 {
@@ -333,6 +338,34 @@ function arePassed($Courses)
 	}
 	
 	return true;
+}
+
+function printSelectedSuggested()
+{
+	echo('<table id="Timetable_Table">');
+	echo('<tr><th>Course Name</th><th>Course Credits</th><th>Delete</th></tr>');
+	$TotalCredits=0;
+	foreach($_SESSION['SuggestedSelectedCourses'] as $Course)
+	{
+		echo('<tr>');
+			
+				$query=DB_Manager::Query("SELECT Course_Name, Course_Credits FROM Course WHERE Course_ID=".$Course);
+				$row=$query->fetch_assoc();
+				echo('<td>');
+				echo($row['Course_Name']);
+				echo('</td>');
+				
+				echo('<td>');
+				echo($row['Course_Credits']);
+				echo('</td>');
+				$TotalCredits+=$row['Course_Credits'];
+			echo("<td><input type='radio' name='RemoveCourse' value='".$Course."' id='login_input'></td>");
+			
+		echo('</tr>');
+	}
+	
+	echo('</table>');
+	echo('<br><div id="Suggested_Div">Selected Courses Credits: '.$TotalCredits.'</div>');	
 }
 
 
