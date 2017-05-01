@@ -7,9 +7,7 @@
 <link type="text/css" rel="stylesheet" href="files/main_stylesheets.css" />
 </head>
 <body>
-
 <table id="MainTable" align="center">
-	
     <tr>
     	<td id="Header">Sugggested TimeTable</td>
     </tr>
@@ -32,8 +30,6 @@
         	</div>
         </td>
     </tr>
-   
     </table>
-    
 </body>
 </html>
