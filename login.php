@@ -19,14 +19,11 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['submi
 <link type="text/css" rel="stylesheet" href="files/main_stylesheets.css" />
 </head>
 <body>
-
 <table id="MainTable" align="center">
 <tr><td style="height:30vw"></td></tr>
 <tr><td align="center">
-
 	
     <form method="post">
-    
     <table id="RoundedBox" align="center">
     <tr>
     	<td style="text-align:left;"><label id="login_label">Code: </label></td>
@@ -48,8 +45,6 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['submi
     <tr>
     	<td><img src="files/images/LOGO.png" width="60%" /></td>
     </tr>
-   
-    </table>
-    
+    </table> 
 </body>
 </html>
