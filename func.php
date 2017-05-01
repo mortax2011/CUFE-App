@@ -227,6 +227,41 @@ function CheckLecTut(&$Array)
 	return $temparray;
 }
 
+function getSlots($All_Slots, $Suggested)
+{
+	$NewSuggested=$Suggested;
+	foreach($All_Slots as $x)
+	{	
+		$append=true;
+
+		foreach($NewSuggested as $z)
+		{
+			if($x["Course_ID"]==$z["Course_ID"] && 	$x["Slot_Type"]==$z["Slot_Type"])
+			{
+				$append=false;
+				break;
+			}
+
+			$append=true;
+		}
+				
+		foreach($NewSuggested as $y)
+		{
+			if($append && (($x["Slot_From"]<$y["Slot_From"] && $x["Slot_To"]<$y["Slot_From"]) || ($x["Slot_From"]>$y["Slot_To"] && $x["Slot_To"]>$y["Slot_To"]) || $x["Slot_Day"]!=$y["Slot_Day"]) && !in_array($x,$Suggested) && !($x['Course_ID']==$y['Course_ID'] && $x['Slot_Type']==$y['Slot_Type']))
+				$append=true;
+			else
+				{
+					$append=false;
+					break;
+				}
+		}
+		if($append==true)
+		{
+			array_push($NewSuggested, array("Slot_ID"=>$x['Slot_ID'], "Slot_From"=>$x['Slot_From'], "Slot_To"=>$x['Slot_To'], "Slot_Type"=>$x["Slot_Type"], "Course_ID"=>$x["Course_ID"], "Type_ID"=>$x["Type_ID"], "Slot_Day"=>$x["Slot_Day"]));
+		}
+	}
+	return $NewSuggested;		
+}
 
 function GenerateSuggested($CourseArr, $DayArr)
 {	
@@ -257,44 +292,16 @@ function GenerateSuggested($CourseArr, $DayArr)
 	if(!$query=DB_Manager::Query($SQL))
 		return;
 	while($row=$query->fetch_assoc())
-	{
 		array_push($All_Slots, array("Slot_ID"=>$row['Slot_ID'], "Slot_From"=>$row['Slot_From'], "Slot_To"=>$row['Slot_To'], "Slot_Type"=>$row["Slot_Type"], "Course_ID"=>$row["Course_ID"], "Type_ID"=>$row["Type_ID"], "Slot_Day"=>$row["Slot_Day"]));
-	}		
 	
-	shuffle($All_Slots);
-	
-	foreach($All_Slots as $x)
-	{	
-		$append=true;
-
-		foreach($Suggested as $z)
-		{
-			if($x["Course_ID"]==$z["Course_ID"] && 	$x["Slot_Type"]==$z["Slot_Type"])
-			{
-				$append=false;
-				break;
-			}
-
-			$append=true;
-		}
-				
-		foreach($Suggested as $y)
-		{
-			if($append && (($x["Slot_From"]<$y["Slot_From"] && $x["Slot_To"]<$y["Slot_From"]) || ($x["Slot_From"]>$y["Slot_To"] && $x["Slot_To"]>$y["Slot_To"]) || $x["Slot_Day"]!=$y["Slot_Day"]) && !in_array($x,$Suggested) && !($x['Course_ID']==$y['Course_ID'] && $x['Slot_Type']==$y['Slot_Type']))
-				$append=true;
-			else
-				{
-					$append=false;
-					break;
-				}
-		}
-		if($append==true)
-		{
-			array_push($Suggested, array("Slot_ID"=>$x['Slot_ID'], "Slot_From"=>$x['Slot_From'], "Slot_To"=>$x['Slot_To'], "Slot_Type"=>$x["Slot_Type"], "Course_ID"=>$x["Course_ID"], "Type_ID"=>$x["Type_ID"], "Slot_Day"=>$x["Slot_Day"]));
-		}
-	}		
-
-	$Suggested=CheckLecTut($Suggested);
+	$Suggested_Old="";
+	while($Suggested_Old!==$Suggested)
+	{
+		$Suggested_Old=$Suggested;
+		shuffle($All_Slots);
+		$Suggested=getSlots($All_Slots, $Suggested);
+		$Suggested=CheckLecTut($Suggested);
+	}
 	PrintSchedule($Suggested);
 	
 }
@@ -367,6 +374,8 @@ function printSelectedSuggested()
 	echo('</table>');
 	echo('<br><div id="Suggested_Div">Selected Courses Credits: '.$TotalCredits.'</div>');	
 }
+
+
 
 
 /* ************************************************************************** */
