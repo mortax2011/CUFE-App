@@ -7,9 +7,7 @@
 <link type="text/css" rel="stylesheet" href="files/main_stylesheets.css" />
 </head>
 <body>
-
 <table id="MainTable" align="center">
-	
     <tr>
     	<td id="Header">Latest News</td>
     </tr>
@@ -20,8 +18,6 @@
         	</div>
         </td>
     </tr>
-   
     </table>
-    
 </body>
 </html>
