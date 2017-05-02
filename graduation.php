@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Graduation Report</title>
 <link type="text/css" rel="stylesheet" href="files/main_stylesheets.css" />
+<script src="js_func.js" language="javascript"></script>
 </head>
 <body>
 
