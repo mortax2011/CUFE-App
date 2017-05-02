@@ -10,6 +10,7 @@ $Week_Days=array("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursd
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>TimeTable</title>
 <link type="text/css" rel="stylesheet" href="files/main_stylesheets.css" />
+<script src="js_func.js" language="javascript"></script>
 </head>
 <body>
 <table id="MainTable" align="center">
