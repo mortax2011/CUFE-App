@@ -17,6 +17,7 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['submi
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login</title>
 <link type="text/css" rel="stylesheet" href="files/main_stylesheets.css" />
+<script src="js_func.js" language="javascript"></script>
 </head>
 <body>
 <table id="MainTable" align="center">
