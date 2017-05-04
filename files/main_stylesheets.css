@@ -96,13 +96,8 @@ img {
 #RoundedBox { 
  	padding:20px;
  	behavior: url(border-radius.htc);
-	-webkit-border-radius: 1px;
-	-webkit-border-top-right-radius: 60px;
-	-webkit-border-top-left-radius: 60px;
-	-moz-border-radius: 1px;
-	-moz-border-radius-topright: 60px;
-	-moz-border-radius-topleft: 60px;
-	border-radius: 1px;
+	-webkit-border-radius: 60px;
+	-moz-border-radius: 60px;
 	border-radius: 60px;
 	border-style:solid;
 	border-color:white;
