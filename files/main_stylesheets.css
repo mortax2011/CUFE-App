@@ -16,8 +16,13 @@ td {
 	text-align:center;
 }
 
-tr{
+tr {
 	vertical-align:top;
+}
+
+select {
+    width: 80vw;
+    text-overflow: ellipsis;
 }
 
 .Hspacer {
