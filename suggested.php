@@ -21,16 +21,16 @@
 					$query=DB_Manager::Query($SQL);
 					while($row=$query->fetch_assoc())
 					{
-						if(arePassed(getPrerequisites($row['Course_ID'])))
+						$temp=getPrerequisites($row['Course_ID']);
+						if($temp && arePassed($temp))
 							array_push($AvailableCourses, $row['Course_ID']);
 					}
-					
 					
 					$SelectedCourse;
 					if(!isset($_SESSION['SuggestedSelectedCourses']))
 						$_SESSION['SuggestedSelectedCourses']=array();
 					if(!empty($_SESSION['SuggestedSelectedCourses']) && isset($_POST['submit']) && $_POST['submit']=="Generate")
-						GenerateSuggested($_SESSION['SuggestedSelectedCourses'], array(0,1, 2, 3, 4, 5));
+						optimizedSchedule($_SESSION['SuggestedSelectedCourses'], array(0,1, 2, 3, 4, 5), 100);
 					else
 					{	
 						if(isset($_POST['SelectedCourse']))
@@ -85,8 +85,6 @@
 							echo('</tr></table>');
 							
 						echo('</form></table><br>');
-						#GenerateSuggested($AvailableCourses, array(0,1, 2, 3, 4, 5))
-						#GenerateSuggested(array(57, 36, 20 , 94, 38, 25, 24, 52), array(1, 2, 3, 4, 5)); 
 					}
 				?>
         	</div>
