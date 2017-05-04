@@ -162,6 +162,7 @@ function PrintSchedule($arr)
 	$Week_Days=array("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday");
 	$Number_Of_Days=0;
 	$Previous_Slot_Day=" ";
+	
 	$SelectedSlots="";
 	
 	foreach($arr as $record)
@@ -169,13 +170,8 @@ function PrintSchedule($arr)
 		$SelectedSlots=$SelectedSlots.$record["Slot_ID"].",";
 	}
 	$SelectedSlots=substr($SelectedSlots, 0, -1);
-	DB_Manager::Query("set names utf8");
 	
-	//Kero's timetable edited
-		$sql_final="SELECT SUM(Course_Credits) AS Total_Credits FROM Course WHERE Course_ID in (SELECT DISTINCT C.Course_ID FROM Offered_In O, Course C, Time_Slot T WHERE O.Course_ID=C.Course_ID AND O.Slot_ID=T.Slot_ID AND T.Slot_ID in (".$SelectedSlots."));";
-		$run_final=DB_Manager::Query($sql_final);
-		$row=$run_final->fetch_assoc();
-		$TotalCredits=$row['Total_Credits'];
+	$TotalCredits=getSuggestedCredits($arr);
 		
 		echo('<br><div id="Suggested_Div">Schedule Credits: '.$TotalCredits.'</div>');
 		
@@ -210,21 +206,40 @@ function PrintSchedule($arr)
 }
 
 
-function CheckLecTut(&$Array)
+function CheckLecTut($Array, $GensArray, $SpecialsArray)
 {
 	$temparray=array();
-	foreach($Array as &$x)
+	foreach($Array as $x)
 	{
 		$keep=false;
 		foreach($Array as $y)
 		{
-			if($x["Course_ID"]==$y["Course_ID"] && $x["Slot_ID"]!=$y["Slot_ID"] && $x["Slot_Type"]!=$y["Slot_Type"])
+			if($x["Course_ID"]==$y["Course_ID"] && $x["Slot_ID"]!=$y["Slot_ID"] && $x["Slot_Type"]!=$y["Slot_Type"] &&(!in_array($x['Course_ID'], $SpecialsArray) || in_array($x['Course_ID'], $SpecialsArray) && $x['Slot_Group']==$y['Slot_Group']))
 				$keep=true;
 		}
-		if($x["Type_ID"]==3 || $keep)
-				array_push($temparray, array("Slot_ID"=>$x['Slot_ID'], "Slot_From"=>$x['Slot_From'], "Slot_To"=>$x['Slot_To'], "Slot_Type"=>$x["Slot_Type"], "Course_ID"=>$x["Course_ID"], "Type_ID"=>$x["Type_ID"], "Slot_Day"=>$x["Slot_Day"]));
+		if(in_array($x['Course_ID'], $GensArray) || $keep)
+				array_push($temparray, array("Slot_ID"=>$x['Slot_ID'], "Slot_From"=>$x['Slot_From'], "Slot_To"=>$x['Slot_To'], "Slot_Type"=>$x["Slot_Type"], "Course_ID"=>$x["Course_ID"], "Type_ID"=>$x["Type_ID"], "Slot_Day"=>$x["Slot_Day"], "Slot_Group"=>$x["Slot_Group"]));
 	}
 	return $temparray;
+}
+
+function getSuggestedCredits($arr)
+{
+	$SelectedSlots="";
+	
+	foreach($arr as $record)
+	{
+		$SelectedSlots=$SelectedSlots.$record["Slot_ID"].",";
+	}
+	$SelectedSlots=substr($SelectedSlots, 0, -1);
+	DB_Manager::Query("set names utf8");
+	
+	//Kero's timetable edited
+		$sql_final="SELECT SUM(Course_Credits) AS Total_Credits FROM Course WHERE Course_ID in (SELECT DISTINCT C.Course_ID FROM Offered_In O, Course C, Time_Slot T WHERE O.Course_ID=C.Course_ID AND O.Slot_ID=T.Slot_ID AND T.Slot_ID in (".$SelectedSlots."));";
+		$run_final=DB_Manager::Query($sql_final);
+		$row=$run_final->fetch_assoc();
+		$TotalCredits=$row['Total_Credits'];
+	return $TotalCredits;	
 }
 
 function getSlots($All_Slots, $Suggested)
@@ -257,14 +272,37 @@ function getSlots($All_Slots, $Suggested)
 		}
 		if($append==true)
 		{
-			array_push($NewSuggested, array("Slot_ID"=>$x['Slot_ID'], "Slot_From"=>$x['Slot_From'], "Slot_To"=>$x['Slot_To'], "Slot_Type"=>$x["Slot_Type"], "Course_ID"=>$x["Course_ID"], "Type_ID"=>$x["Type_ID"], "Slot_Day"=>$x["Slot_Day"]));
+			array_push($NewSuggested, array("Slot_ID"=>$x['Slot_ID'], "Slot_From"=>$x['Slot_From'], "Slot_To"=>$x['Slot_To'], "Slot_Type"=>$x["Slot_Type"], "Course_ID"=>$x["Course_ID"], "Type_ID"=>$x["Type_ID"], "Slot_Day"=>$x["Slot_Day"], "Slot_Group"=>$x["Slot_Group"]));
 		}
 	}
 	return $NewSuggested;		
 }
 
-function GenerateSuggested($CourseArr, $DayArr)
-{	
+function GenerateSuggested($All_Slots_Original, $GensArray, $SpecialsArray)
+{	$All_Slots=$All_Slots_Original;
+	unset($Suggested);
+	$Suggested=array();
+	
+	$Suggested_Old="";
+	while($Suggested_Old!==$Suggested)
+	{
+		$Suggested_Old=$Suggested;
+		shuffle($All_Slots);
+		$Suggested=getSlots($All_Slots, $Suggested);
+		$Suggested=CheckLecTut($Suggested, $GensArray, $SpecialsArray);
+	}
+	return $Suggested;
+}
+
+function optimizedSchedule($CourseArr, $DayArr, $n)
+//n-> number of random samples
+{
+	$Original_All_Slots=array();	  //Contains all available timeslots for selected courses
+	$SpecialsArray=array();		   //Contains IDs of all courses that must have matching tutorial & lecture groups
+	$MyArray=array();				 //Contains n number of randomly generated schedules
+	$HighestArray=array();			//Contains all randomly generated schedules with equal highest number of credits
+	$GensArray=array();			   //Contains IDs of GEN courses
+	$last=0;
 	$SelectedCourses="";
 	$days="";
 	
@@ -277,46 +315,110 @@ function GenerateSuggested($CourseArr, $DayArr)
 	foreach($CourseArr as $course)
 			$SelectedCourses=$SelectedCourses.$course.",";
 	$SelectedCourses=substr($SelectedCourses, 0, -1);
-		
-	unset($Suggested);
-	unset($All_Slots);
-	$Suggested=array();
-	$All_Slots=array();
 	
 	$SQL="
-		SELECT T.Slot_ID, T.Slot_From, T.Slot_To, T.Slot_Type, O.Course_ID, C.Type_ID, T.Slot_Day
+		SELECT T.Slot_ID, T.Slot_From, T.Slot_To, T.Slot_Type, O.Course_ID, C.Type_ID, T.Slot_Day, T.Slot_Group
 		FROM Time_Slot T, Offered_In O, Course C
-		WHERE O.Slot_ID=T.Slot_ID AND C.Course_ID=O.Course_ID AND O.Course_ID in(".$SelectedCourses.") AND T.Slot_Day in (".$days.")
+		WHERE T.Slot_Status=1 AND O.Slot_ID=T.Slot_ID AND C.Course_ID=O.Course_ID AND O.Course_ID in(".$SelectedCourses.") AND T.Slot_Day in (".$days.")
 		;";	
 		
 	if(!$query=DB_Manager::Query($SQL))
 		return;
 	while($row=$query->fetch_assoc())
-		array_push($All_Slots, array("Slot_ID"=>$row['Slot_ID'], "Slot_From"=>$row['Slot_From'], "Slot_To"=>$row['Slot_To'], "Slot_Type"=>$row["Slot_Type"], "Course_ID"=>$row["Course_ID"], "Type_ID"=>$row["Type_ID"], "Slot_Day"=>$row["Slot_Day"]));
+		array_push($Original_All_Slots, array("Slot_ID"=>$row['Slot_ID'], "Slot_From"=>$row['Slot_From'], "Slot_To"=>$row['Slot_To'], "Slot_Type"=>$row["Slot_Type"], "Course_ID"=>$row["Course_ID"], "Type_ID"=>$row["Type_ID"], "Slot_Day"=>$row["Slot_Day"], "Slot_Group"=>$row["Slot_Group"]));
 	
-	$Suggested_Old="";
-	while($Suggested_Old!==$Suggested)
+	$query=DB_Manager::Query("SELECT Course_ID FROM Course WHERE Course_Code LIKE 'GENN%'");
+	while($row=$query->fetch_assoc())
+		array_push($GensArray, $row['Course_ID']);
+	
+	$query=DB_Manager::Query("SELECT Course_ID FROM Course WHERE Course_Code in ('MTHN%')");
+	while($row=$query->fetch_assoc())
+		array_push($SpecialsArray, $row['Course_ID']);
+			
+	for($i=0; $i<$n; $i++)
 	{
-		$Suggested_Old=$Suggested;
+		unset($All_Slots);
+		$All_Slots=$Original_All_Slots;
 		shuffle($All_Slots);
-		$Suggested=getSlots($All_Slots, $Suggested);
-		$Suggested=CheckLecTut($Suggested);
+		array_push($MyArray, GenerateSuggested($All_Slots, $GensArray, $SpecialsArray));
 	}
-	PrintSchedule($Suggested);
+
 	
+	//Get highest number of credits among generated schedules
+	foreach($MyArray as $x)
+	{
+		$z=getSuggestedCredits($x);
+		if($z>$last)
+			$last=$z;
+	}
+	
+	
+	//Get all schedules having the highest credits
+	foreach($MyArray as $x)
+	{
+		$z=getSuggestedCredits($x);
+		if($z==$last)
+			array_push($HighestArray, $x);
+	}
+	
+	$last=1000000000;
+	foreach($HighestArray as $x)
+	{
+		$z=CalcScheduleGaps($x);
+		if($z<$last)
+		{
+			$last=$z;
+			$FinalArray=$x;
+		}
+	}
+	PrintSchedule($FinalArray);
+}
+
+function CalcScheduleGaps($Arr)
+{
+	$time='00:00:00';
+	for($day=0; $day<=5; $day++)
+	{
+		$min='20:00:00';
+		$max='00:00:00';
+		foreach($Arr as $x)
+		{
+			if($x['Slot_Day']==$day)
+			{
+				if($x['Slot_From']<$min)
+					$min=$x['Slot_From'];
+				if($x['Slot_To']>$max)
+					$max=$x['Slot_To'];
+			}	
+		}
+		sscanf(strtotime($max), "%d:%d:%d", $hours, $minutes, $seconds);
+		$max_seconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
+		
+		sscanf(strtotime($min), "%d:%d:%d", $hours, $minutes, $seconds);
+		$min_seconds = isset($seconds) ? $hours * 3600 + $minutes * 60 + $seconds : $hours * 60 + $minutes;
+		
+		$time+=($max_seconds-$min_seconds)/3600;
+	}
+	return $time;
 }
 
 function Prereq($Courses)
 {
 	$Prerequisites=array();
 	
-	
+	$query=DB_Manager::Query('SELECT Student_Credits FROM Student WHERE Student_ID='.getID());
+	$row=$query->fetch_assoc();
+	$Student_Credits=$row['Student_Credits'];
 		foreach($Courses as $Course)
 		{
-			$query=DB_Manager::Query("SELECT Prerequisite_ID as pID FROM Prerequisite WHERE Course_ID=".$Course['pID']);
-			
+			$query=DB_Manager::Query("SELECT Prerequisite_ID as pID, Prerequisite_Hours as pH FROM Prerequisite WHERE Course_ID=".$Course['pID'] );
 			while($row=$query->fetch_assoc())
-				 array_push($Prerequisites, array("pID"=>$row['pID']));
+			{
+				if($row['pH']>$Student_Credits)
+					return -1;
+				if($row['pID']!=0)
+				 	array_push($Prerequisites, array("pID"=>$row['pID']));
+			}
 			
 		}
 		return $Prerequisites;
@@ -328,6 +430,8 @@ function getPrerequisites($Course_ID)
 	$Preq=array(array('pID'=>$Course_ID));
 	while($Preq=Prereq($Preq))
 	{
+		if($Preq==-1)
+			return false;
 		foreach($Preq as $p)
 			array_push($Prerequisites, $p['pID']);
 	}
@@ -374,8 +478,6 @@ function printSelectedSuggested()
 	echo('</table>');
 	echo('<br><div id="Suggested_Div">Selected Courses Credits: '.$TotalCredits.'</div>');	
 }
-
-
 
 
 /* ************************************************************************** */
