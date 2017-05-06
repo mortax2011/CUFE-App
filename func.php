@@ -543,4 +543,52 @@ function calc_quality($Grade, $Course_Credits)
 	
 	return $Quality_points ;
 } 
+
+/* ************************************************************************** */
+//Graduation Report Functions
+/* ************************************************************************** */
+
+function Type_Total_Credits($Student_ID, $Type_ID)
+{
+	$sql_final="
+		SELECT Course.Course_ID,Course_Code,Course_Name,Course_Credits,Grade,Type_Name 
+		FROM 
+		Offered_For JOIN Student ON Student.Program_ID = Offered_For.Program_ID
+		JOIN Course ON Offered_For.Course_ID = Course.Course_ID
+		JOIN Course_Type ON Course.Type_ID = Course_Type.Type_ID AND Course_Type.Type_ID=".$Type_ID."
+		LEFT JOIN Grades ON Student.Student_ID = Grades.Student_ID AND Grades.Course_ID = Course.Course_ID
+		WHERE Student.Student_ID = '".$Student_ID."' ORDER BY Course.Type_ID, Grades.Grade";
+		
+	$query=DB_Manager::Query($sql_final);
+	$Total_Credits=0;
+	while($row=$query->fetch_assoc())
+	{
+		$Course_Credits=$row['Course_Credits'];
+		$Total_Credits+=$Course_Credits;
+	}
+	return $Total_Credits;
+}
+
+function Type_Actual_Credits($Student_ID, $Type_ID)
+{
+	$sql_final="
+		SELECT Course.Course_ID,Course_Code,Course_Name,Course_Credits,Grade,Type_Name 
+		FROM 
+		Offered_For JOIN Student ON Student.Program_ID = Offered_For.Program_ID
+		JOIN Course ON Offered_For.Course_ID = Course.Course_ID
+		JOIN Course_Type ON Course.Type_ID = Course_Type.Type_ID AND Course_Type.Type_ID=".$Type_ID."
+		LEFT JOIN Grades ON Student.Student_ID = Grades.Student_ID AND Grades.Course_ID = Course.Course_ID
+		WHERE Student.Student_ID = '".$Student_ID."' ORDER BY Course.Type_ID, Grades.Grade";
+		
+	$query=DB_Manager::Query($sql_final);
+	$Total_Credits=0;
+	while($row=$query->fetch_assoc())
+	{
+		$Course_Credits=$row['Course_Credits'];
+		if(!empty($row['Grade']))
+			$Total_Credits+=$Course_Credits;
+	}
+	return $Total_Credits;
+}
+
 ?>
