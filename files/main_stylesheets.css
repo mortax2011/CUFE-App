@@ -3,7 +3,9 @@
 
 body {
 	 margin:0;
-	 background-color:black;
+	 background-color:#30505b;
+	 background-repeat:repeat;
+	 background-image:url(images/background.jpg);
 }
 
 a {
@@ -18,12 +20,13 @@ td {
 
 tr {
 	vertical-align:top;
+
 }
 
-select {
-    width: 80vw;
-    text-overflow: ellipsis;
-}
+select {  
+	 width: 80vw;
+	 text-overflow: ellipsis;
+ }
 
 .Hspacer {
 	width:5.5vw;
@@ -39,14 +42,12 @@ select {
 }
 
 #icon:hover {
-	 opacity: 1;
-   	 filter: alpha(opacity=100); /* For IE8 and earlier */	 
+	 opacity: 1;  	 filter: alpha(opacity=100); /* For IE8 and earlier */	 
 }
- 
+
 #icon:active {
-	 opacity: 0.5;
-  	 filter: alpha(opacity=50); /* For IE8 and earlier */
- }
+	 opacity: 0.5; 	 filter: alpha(opacity=50); /* For IE8 and earlier */
+}
 
 #icon_txt {
 	 color: white;  font-family:Arial;
@@ -55,14 +56,10 @@ select {
 	 text-align:center;
 	 line-height:1;
 }
- 
+
 #MainTable {
 	 height:100vh;
 	 width:100vw;
-	 background-position:center;
-	 background-size:cover;
-	 background-attachment:fixed;
-	 background-image:url(images/background.jpg);
 	 table-layout: fixed;
 }
 
@@ -71,7 +68,7 @@ select {
 img {
 	 border-style:none;
 }
- 
+
 #header {
 	 padding-top:1.5%;
 	 height:85%;
@@ -85,17 +82,16 @@ img {
 	 font-size:4.5vw;
 	 font-weight:600;
 }
- 
+
 #login_input {
 	 color: black;
 	 font-family:Arial;
 	 font-size:4.5vw;
 	 font-weight:600;
 }
- 
+
 #RoundedBox { 
- 	padding:20px;
- 	behavior: url(border-radius.htc);
+	padding:20px;	behavior: url(border-radius.htc);
 	-webkit-border-radius: 60px;
 	-moz-border-radius: 60px;
 	border-radius: 60px;
@@ -120,7 +116,7 @@ img {
 }
 
 input[type=text]:focus {
-    border-color:#333;
+	border-color:#333;
 }
 
 input[type=submit] {
@@ -153,9 +149,10 @@ input[type=submit] {
 	vertical-align:middle;	
 }
 
+
 /* *********************************************** */
-/* Fady's Part Beginning*/
-	
+/* Fady's Part Beginning*/	
+
 #Classwork_Table {
 	color:white;
 	border-style:none;
@@ -174,7 +171,7 @@ input[type=submit] {
 	border-color:black;
 	background-color:rgba(0, 0, 0, 0.5);
 }
-	
+
 #Classwork_Table th {
 	font-weight:600;
 	border-style:solid;
@@ -184,6 +181,22 @@ input[type=submit] {
 	border-color:black;
 	color:black;
 }
+
+.Graduation_Passed {
+	background-color:rgba(0, 255, 0, 0.5);
+}
+
+.Graduation_NotPassed {
+	background-color:rgba(255, 0, 0, 0.5);
+}
+.Graduation_Headers {
+		background-color:rgb(65, 172, 234);
+		border-width:thick;
+		border-spacing:5px;
+		text-align:center;
+		vertical-align:middle;
+		font-weight:600;
+}
 	
 /* Fady's Part End*/
 /* *********************************************** */
@@ -191,7 +204,7 @@ input[type=submit] {
 
 /* *********************************************** */
 /* Kero's Part Beginning*/
-	
+
 #Timetable_Table {
 	color:white;
 	border-style:none;
@@ -242,7 +255,7 @@ input[type=submit] {
 
 /* *********************************************** */
 /* Mortada's Part Beginning*/
-	
+
 #Profile_Table {
 	color:white;
 	border-style:none;
@@ -263,7 +276,6 @@ input[type=submit] {
 	vertical-align:middle;
 	width:15vw;
 	padding:1.5vw;
-
 }
 
 #Profile_Table td {
@@ -273,6 +285,18 @@ input[type=submit] {
 	text-align:left;
 	border-color:black;
 	background-color:rgba(0, 0, 0, 0.5);
+}
+
+.GPA_Header {
+	background-color:rgba(100, 255, 0, 0.75);
+	text-align:center;
+	vertical-align:middle;
+}
+
+.GPA_Footer {
+	background-color:rgba(0, 255, 0, 0.5);
+	text-align:center;
+	vertical-align:middle;
 }
 
 /* Mortada's Part End*/
