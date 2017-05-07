@@ -22,7 +22,7 @@
 
 		$Student_ID=getID();
 
-		$sql="SELECT Student_Name_AR,Program_Name,Student_Code,Student_Name_EN,Student_Credits,Student_GPA, Student_Last_GPA FROM Program p,Student s WHERE Student_ID='".$Student_ID."' AND s.Program_ID=p.Program_ID;";
+		$sql="SELECT Student_Code,Student_Name_EN,Student_Credits,Student_GPA, Student_Last_GPA FROM Student s WHERE Student_ID=".$Student_ID;
 
 		DB_Manager::Query("set names utf8");
 
@@ -38,123 +38,43 @@
 		$Student_GPA=$row['Student_GPA'];
 		$Student_Credits=$row['Student_Credits'];
 
-		echo '<div  id="GPATranscript_Div_Basic">'.$Student_Code." ". $row['Student_Name_EN']." </div>";
-		echo '<div  id="GPATranscript_Div">Transcript for calculating GPA "';
+		echo '<div id="Timetable_Div" style="text-align:center;">'.$Student_Code." ". $row['Student_Name_EN']." </div>";		
+		echo '	<table id="Timetable_Table" align="center">
+		<tr class="GPA_Header">
+						<th>Course Code</th>
+						<th>Course Title</th>
+						<th>Grade</th>
+						<th>Hours</th>
+						<th>Quality Points</th>
+		</tr>';
+	$Semester_ID_Prev="";
+	
+	$sql="SELECT C.Course_Code, C.Course_Name, C.Course_Credits, G.Grade, S.Semester_ID,S.Semester_Name FROM Course C, Grades G, Semester S WHERE C.Course_ID=G.Course_ID AND G.Semester_ID=S.Semester_ID AND G.Student_ID=".getID()." ORDER BY S.Semester_ID;";
+	$query=DB_Manager::Query($sql);
+	while($row=$query->fetch_assoc())
+	{
+		$Course_Code=$row['Course_Code'];
+		$Semester_ID_Next=$row['Semester_ID'];
+		$Grade=$row['Grade'];
+		$Semester_Name=$row['Semester_Name'];
+		$Course_Credits=$row['Course_Credits'];
+		$Course_Name=$row['Course_Name'];
+		$Quality_points=calc_quality($Grade, $Course_Credits);
 		
-		echo '	<table id="GPA Table Header" align="center">
+		if($Semester_ID_Prev!=$Semester_ID_Next)
+			echo("<tr><th colspan='5'>".$Semester_Name."</th></tr>");
+		$Semester_ID_Prev=$Semester_ID_Next;
+		
+		echo "
 		<tr>
-						<td style= border: 1px solid black > Course NO </td>
-						<td style= border: 1px solid black > Course Title </td>
-						<td style= border: 1px solid black >  Grade </td>
-						<td style= border: 1px solid black >  Hours </td>
-						<td style= border: 1px solid black >  Quality Points </td>
+		<td>".$Course_Code."</td><td>".$Course_Name."</td><td>".$Grade."</td><td>".$Course_Credits."</td><td>".$Quality_points."</td>
 		</tr>
-		</table>';
-	
-	
-	$sql_first="SELECT * FROM Grades WHERE Student_ID='".$Student_ID."' ORDER BY Semester_ID;";
-	$run_first=DB_Manager::Query($sql_first);
-	if($row=$run_first->fetch_assoc())
-	{
-	$Course_ID=$row['Course_ID'];
-	$Semester_ID_Prev=$row['Semester_ID'];
-	$Semester_ID_Next=$row['Semester_ID'];
-	$Grade=$row['Grade'];
-	
-	$sql_Semester="SELECT * FROM Semester WHERE Semester_ID='".$Semester_ID_Prev."'";
-	$run_Semester=DB_Manager::Query($sql_Semester);
-	if($row=$run_Semester->fetch_assoc())
-	{
-		$Semester_Name=$row['Semester_Name'];
+		" ; 
 	}
-	$sql_Course="SELECT * FROM Course WHERE Course_ID='".$Course_ID."'";
-	$run_Course=DB_Manager::Query($sql_Course);
-	if($row=$run_Course->fetch_assoc())
-	{
-		$Course_Credits=$row['Course_Credits'];
-		$Course_Name=$row['Course_Name'];
-	}
-	$Quality_points=calc_quality($Grade, $Course_Credits);
-	echo	"<table id=GPATranscript_main>
-	<tr>
-	<th id=semester_title colspan='5'>".$Semester_Name."
-	</th>
-	</tr>
-	<tr>
-	<td>".$Course_ID."</td><td>".$Course_Name."</td><td>".$Grade."</td><td>".$Course_Credits."</td><td>".$Quality_points."</td>
-	</tr>
-	
-	" ; 
-	}
-	while($row=$run_first->fetch_assoc())
-	{
-	$Course_ID=$row['Course_ID'];
-	$Semester_ID_Next=$row['Semester_ID'];
-	$Grade=$row['Grade'];
-	
-	if($Semester_ID_Next==$Semester_ID_Prev)
-	{
-	$sql_Semester="SELECT * FROM Semester WHERE Semester_ID='".$Semester_ID_Prev."'";
-	$run_Semester=DB_Manager::Query($sql_Semester);
-	if($row=$run_Semester->fetch_assoc())
-	{
-		$Semester_Name=$row['Semester_Name'];
-	}
-	$sql_Course="SELECT * FROM Course WHERE Course_ID='".$Course_ID."'";
-	$run_Course=DB_Manager::Query($sql_Course);
-	if($row=$run_Course->fetch_assoc())
-	{
-		$Course_Credits=$row['Course_Credits'];
-		$Course_Name=$row['Course_Name'];
-	}
-	 $Quality_points=calc_quality($Grade, $Course_Credits);
-	echo	"
-	<tr>
-	<td>".$Course_ID."</td><td>".$Course_Name."</td><td>".$Grade."</td><td>".$Course_Credits."</td><td>".$Quality_points."</td>
-	</tr>
-	
-	" ; 
-	}
-	else{
-	$Semester_ID_Prev=$row['Semester_ID'];
-	$Course_ID=$row['Course_ID'];
-	$Semester_ID_Next=$row['Semester_ID'];
-	$Grade=$row['Grade'];
-	
-	$sql_Semester="SELECT * FROM Semester WHERE Semester_ID='".$Semester_ID_Prev."'";
-	$run_Semester=DB_Manager::Query($sql_Semester);
-	if($row=$run_Semester->fetch_assoc())
-	{
-		$Semester_Name=$row['Semester_Name'];
-	}
-	$sql_Course="SELECT * FROM Course WHERE Course_ID='".$Course_ID."'";
-	$run_Course=DB_Manager::Query($sql_Course);
-	if($row=$run_Course->fetch_assoc())
-	{
-		$Course_Credits=$row['Course_Credits'];
-		$Course_Name=$row['Course_Name'];
-	}
-	$Quality_points=calc_quality($Grade, $Course_Credits);
-	echo	"
-	<tr>
-	<th id=semester_title colspan='5'>" .$Semester_Name."
-	</th>
-	</tr>
-	<tr>
-	<td>".$Course_ID."</td><td>".$Course_Name."</td><td>".$Grade."</td><td>".$Course_Credits."</td><td>".$Quality_points."</td>
-	</tr>
-	
-	" ; 
-	}
-	
-	}
-	echo' </table>' ;
-	
-	echo " <div > Cumulative GPA = ".$Student_GPA." </div>";
-		
-	echo " <div > Last Term GPA = ".$Student_Last_GPA." </div>";
-	
-	echo " <div > Total Credits = ".$Student_Credits." </div>";
+	echo "<tr class='GPA_Footer'><td colspan='5'>Cumulative GPA = ".$Student_GPA."</td></tr>";
+	echo "<tr class='GPA_Footer'><td colspan='5'>Last Term GPA = ".$Student_Last_GPA."</td></tr>";
+	echo "<tr class='GPA_Footer'><td colspan='5'>Total Credits = ".$Student_Credits."</td></tr>";
+	echo('</table>');
 	}
 		?>
         	</div>
